@@ -1,0 +1,51 @@
+.user-form {
+    width: 400px;
+    background-color: #fff;
+}
+
+.login-form {
+    margin: 50px auto;
+}
+
+.register-form {
+    margin: 20px auto;
+}
+
+.invalid-feedback {
+    color: #cc4d4d;
+    margin: 5px 0;
+}
+
+.btn-cart-add {
+    border: 0;
+    flex: 1;
+    min-width: 13rem;
+    font-size: 1.4rem;
+    border-radius: 0.3rem;
+    background-color: #26c;
+    color: #fff;
+    cursor: pointer;
+    max-width: 20.7rem;
+    height: 4.5rem;
+}
+
+.btn-cart-add i {
+    margin: 0 5px;
+}
+
+.added-success {
+    position: absolute;
+    top: -140px;
+    right: 40px;
+    z-index: 1;
+}
+
+.info-section {
+    background: #f7f7f7;
+    height: 250px;
+}
+
+.order-info {
+    display: inline-block;
+    width: 70px;
+}
