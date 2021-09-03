@@ -2,6 +2,8 @@
 
 namespace App\Helper;
 
+use App\Models\Backend\Color;
+use App\Models\Backend\Size;
 use Illuminate\Support\Str;
 
 class CartHelper
@@ -40,6 +42,9 @@ class CartHelper
 
     public function add($product, $color, $size, $quantity)
     {
+        if (!$quantity || $quantity < 1) {
+            $quantity = 1;
+        }
 
         $rowId = Str::random();
 
@@ -69,6 +74,11 @@ class CartHelper
 
     public function update($rowId, $color, $size, $quantity)
     {
+        // Check quantity valid
+        if ($quantity < 0 || !is_numeric($quantity)) {
+            $quantity = $this->cart[$rowId]['quantity'];
+        }
+
         $id_product = $this->cart[$rowId]['product_id'];
 
         $key_item_exists = $this->checkUpdateItemExists($rowId, $id_product, $color, $size);
@@ -105,8 +115,6 @@ class CartHelper
             // Save cart
             session(['cart' => $this->cart]);
         }
-
-        // session()->invalidate();
     }
 
     // Remove all item
@@ -123,6 +131,7 @@ class CartHelper
         foreach ($this->cart as $item) {
             $total_quantity += $item['quantity'];
         }
+
         return $total_quantity;
     }
 
@@ -145,5 +154,15 @@ class CartHelper
     public function getTotalAmount()
     {
         return $this->total_amount;
+    }
+
+    public function getColorName($color_id)
+    {
+        return Color::find($color_id)->name;
+    }
+
+    public function getSizeName($size_id)
+    {
+        return Size::find($size_id)->value;
     }
 }

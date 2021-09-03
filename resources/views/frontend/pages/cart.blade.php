@@ -3,8 +3,8 @@
 @section('content')
 
 <main class="main cart">
+    @if(Session::has('success'))
     <div class="page-content pt-7 pb-10">
-        @if(Session::has('success'))
         <div class="added-success">
             <div class="alert alert-success alert-dark alert-round alert-inline">
                 <h4 class="alert-title">Success :</h4>
@@ -16,112 +16,116 @@
         </div>
     </div>
     @endif
+    @if (count($cart->content()) > 0)
     <div class="step-by pr-4 pl-4">
         <h3 class="title title-simple title-step active"><a href="{{ route('cart.show') }}">1. Shopping Cart</a>
         </h3>
         <h3 class="title title-simple title-step"><a href="{{ route('cart.show') }}">2. Checkout</a></h3>
     </div>
+    @endif
     <div class="container mt-7 mb-2">
         <div class="row">
+            @if (count($cart->content()) > 0)
             <div class="col-lg-8 col-md-12 pr-lg-4">
-                <table class="shop-table cart-table">
-                    <thead>
-                        <tr>
-                            <th><span>Image</span></th>
-                            <th><span>Name</span></th>
-                            <th><span>Price</span></th>
-                            <th><span>Color</span></th>
-                            <th><span>Size</span></th>
-                            <th><span>Quantity</span></th>
-                            <th>Subtotal</th>
-                            <th colspan="2">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($cart->content() as $key => $item)
-                        <form action="{{ route('cart.update') }}" method="POST">
-                            @csrf
-                            @method('put')
-                            <input type="hidden" name="rowId" value="{{ $key }}">
+                <div class="cart-exits">
+                    <table class="shop-table cart-table">
+                        <thead>
                             <tr>
-                                <td class="product-thumbnail">
-                                    <figure>
-                                        <a href="{{ route('product_detail',$item['product']->slug ) }}">
-                                            <img src="{{ asset('uploads/products/product_avatar') . '/' . $item['image'] }}"
-                                                width="100" height="100" alt="product">
-                                        </a>
-                                    </figure>
-                                </td>
-                                <td class="product-name">
-                                    <div class="product-name-section">
-                                        <a href="{{ route('product_detail',$item['product']->slug ) }}">
-                                            {{ $item['name'] }}
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="product-subtotal">
-                                    <span class="amount">${{ number_format($item['price'], 2, ',') }}</span>
-                                </td>
-                                <td class="product-subtotal">
-                                    <select name="color">
-                                        @foreach ($item['product']->productColors as $color)
-                                        <option value="{{ $color->id }}"
-                                            {{ $item['color'] == $color->id ? 'selected' : '' }}>{{ $color->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-
-                                </td>
-                                <td class="product-subtotal">
-                                    <select name="size">
-                                        @foreach ($item['product']->productSizes as $size)
-                                        <option value="{{ $size->id }}"
-                                            {{ $item['size'] == $size->id ? 'selected' : '' }}>{{ $size->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td class="product-quantity">
-                                    <div class="input-group">
-                                        <button type="button" class="quantity-item-minus d-icon-minus"></button>
-                                        <input class="quantity-item form-control" type="number" name="quantity"
-                                            value="{{ $item['quantity'] }}">
-                                        <button type="button" class="quantity-item-plus d-icon-plus"></button>
-                                    </div>
-                                </td>
-                                <td class="product-price">
-                                    <span
-                                        class="amount">${{ number_format(($item['quantity'] * $item['price']), 2, ',') }}</span>
-                                </td>
-                                <td class="product-close">
-                                    {{-- Update --}}
-                                    <button class="product-remove" type="submit">
-                                        <i class="far fa-save"></i>
-                                    </button>
-                                </td>
-                                <td class="product-close">
-                                    {{-- Delte --}}
-                                    <a href="{{ route('cart.remove', $key) }}" class="product-remove"
-                                        title="Remove this product">
-                                        <i class="fas fa-times"></i>
-                                    </a>
-                                </td>
+                                <th><span>Image</span></th>
+                                <th><span>Name</span></th>
+                                <th><span>Price</span></th>
+                                <th><span>Color</span></th>
+                                <th><span>Size</span></th>
+                                <th><span>Quantity</span></th>
+                                <th>Subtotal</th>
+                                <th colspan="2">Action</th>
                             </tr>
-                        </form>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="cart-actions mb-6 pt-4">
-                    <a href="{{ route('category') }}" class="btn btn-dark btn-md btn-rounded btn-icon-left mr-4 mb-4"><i
-                            class="d-icon-arrow-left"></i>Continue Shopping</a>
-                    <button type="submit" class="btn btn-outline btn-dark btn-md btn-rounded btn-disabled">Update
-                        Cart</button>
-                </div>
-                <div class="cart-coupon-box mb-8">
-                    <h4 class="title coupon-title text-uppercase ls-m">Coupon Discount</h4>
-                    <input type="text" name="coupon_code" class="input-text form-control text-grey ls-m mb-4"
-                        id="coupon_code" value="" placeholder="Enter coupon code here...">
-                    <button type="submit" class="btn btn-md btn-dark btn-rounded btn-outline">Apply Coupon</button>
+                        </thead>
+                        <tbody>
+                            @foreach ($cart->content() as $key => $item)
+                            <form action="{{ route('cart.update') }}" method="POST">
+                                @csrf
+                                @method('put')
+                                <input type="hidden" name="rowId" value="{{ $key }}">
+                                <tr>
+                                    <td class="product-thumbnail">
+                                        <figure>
+                                            <a href="{{ route('product_detail',$item['product']->slug ) }}">
+                                                <img src="{{ asset('uploads/products/product_avatar') . '/' . $item['image'] }}"
+                                                    width="100" height="100" alt="product">
+                                            </a>
+                                        </figure>
+                                    </td>
+                                    <td class="product-name">
+                                        <div class="product-name-section">
+                                            <a href="{{ route('product_detail',$item['product']->slug ) }}">
+                                                {{ $item['name'] }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="product-subtotal">
+                                        <span class="amount">${{ number_format($item['price'], 2, ',') }}</span>
+                                    </td>
+                                    <td class="product-subtotal">
+                                        <select name="color">
+                                            @foreach ($item['product']->productColors as $color)
+                                            <option value="{{ $color->id }}"
+                                                {{ $item['color'] == $color->id ? 'selected' : '' }}>
+                                                {{ $color->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+
+                                    </td>
+                                    <td class="product-subtotal">
+                                        <select name="size">
+                                            @foreach ($item['product']->productSizes as $size)
+                                            <option value="{{ $size->id }}"
+                                                {{ $item['size'] == $size->id ? 'selected' : '' }}>
+                                                {{ $size->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <div class="input-group">
+                                            <button type="button" class="quantity-item-minus d-icon-minus"></button>
+                                            <input class="quantity-item form-control" id="item-quantity" type="number" name="quantity"
+                                                value="{{ $item['quantity'] }}">
+                                            <button type="button" class="quantity-item-plus d-icon-plus"></button>
+                                        </div>
+                                    </td>
+                                    <td class="product-price">
+                                        <span
+                                            class="amount">${{ number_format(($item['quantity'] * $item['price']), 2, ',') }}</span>
+                                    </td>
+                                    <td class="product-close">
+                                        {{-- Update --}}
+                                        <button class="product-remove" type="submit">
+                                            <i class="far fa-save"></i>
+                                        </button>
+                                    </td>
+                                    <td class="product-close">
+                                        {{-- Delte --}}
+                                        <a href="{{ route('cart.remove', $key) }}" class="product-remove"
+                                            title="Remove this product">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </form>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="cart-actions mb-6 pt-4">
+                        <a href="{{ route('category') }}"
+                            class="btn btn-dark btn-md btn-rounded btn-icon-left mr-4 mb-4"><i
+                                class="d-icon-arrow-left"></i>Continue Shopping</a>
+                        <a onclick="return confirm('Do you want to delete all cart ?')"
+                            href="{{ route('cart.destroy') }}"
+                            class="btn btn-dark btn-md btn-rounded btn-icon-left mr-4 mb-4">Delete
+                            All Cart</a>
+                    </div>
                 </div>
             </div>
             <aside class="col-lg-4 sticky-sidebar-wrapper">
@@ -209,6 +213,13 @@
                     </div>
                 </div>
             </aside>
+            @else
+            <div class="cart-emply text-center">
+                <h3>Your cart is empty !</h3>
+                <a href="{{ route('category') }}" class="btn btn-dark btn-md btn-rounded btn-icon-left mr-4 mb-4"><i
+                        class="d-icon-arrow-left"></i>Shopping now</a>
+            </div>
+            @endif
         </div>
     </div>
     </div>

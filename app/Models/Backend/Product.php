@@ -2,6 +2,9 @@
 
 namespace App\Models\Backend;
 
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\ProductReview;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,15 +16,84 @@ class Product extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
+    // Check the product number belongs to the category
+    public function orderOfProduct()
+    {
+        return $this->belongsToMany(Order::class, OrderDetail::class);
+    }
+
     // *** Query *** \\
     public function scopeSearch($query)
     {
-        if (request()->key) {
-            $query = $query->where('name', 'LIKE', '%' . request()->key . '%');
+
+        if (request()->name) {
+            $query->where('name', 'LIKE', '%' . request()->name . '%');
         }
 
+        if (request()->status != null) {
+            $query->where('status', request()->status);
+        }
         return $query;
     }
+
+    public function scopeSearchByColor($query)
+    {
+        if (request()->color) {
+            $products = Product::join('product_colors', 'products.id', '=', 'product_colors.product_id')
+                ->select('products.*')
+                ->where('product_colors.color_id', request()->color);
+
+            return $products;
+        }
+    }
+
+    public function scopeSearchBySize($query)
+    {
+        if (request()->size) {
+            $products = Product::join('product_sizes', 'products.id', '=', 'product_sizes.product_id')
+                ->select('products.*')
+                ->where('product_sizes.size_id', request()->size);
+
+            return $products;
+        }
+    }
+
+    public function scopeSortBy($query)
+    {
+        if (request()->orderby) {
+            switch (request()->orderby) {
+                case 'latest':
+                    $query->latest();
+                    break;
+                case 'price-low':
+                    $query->orderBy('price', 'asc');
+                    break;
+                case 'name-az':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'name-za':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'price-high':
+                    $query->orderBy('price', 'asc');
+                    break;
+                default:
+                    $query->oldest();
+                    break;
+            }
+        }
+    }
+
+    public function scopeSortByPrice($query)
+    {
+        if (request()->from > 0 && request()->to > 0 && request()->from < request()->to) {
+            $query->where('price', '>=', request()->from)->where('price', '<=', request()->to);
+
+            return $query;
+        }
+    }
+
+
 
     // Get the category of product
     public function category()
@@ -33,6 +105,12 @@ class Product extends Model
     public function productColorsExist()
     {
         return $this->hasMany(ProductColor::class);
+    }
+
+    // Review of product
+    public function reviews()
+    {
+        return $this->belongsToMany(ProductReview::class);
     }
 
     // Get all sizes
@@ -100,13 +178,10 @@ class Product extends Model
     {
         if ($slug) {
             $category = Category::where('slug', $slug)->first();
-            $products = Product::where('category_id', $category->id)->paginate(9);
-            return $products;
+            $query = Product::where('category_id', $category->id);
         }
 
-        $products = Product::paginate(9);
-
-        return $products;
+        return $query;
     }
 
     public function scopeRelated($query, $product)

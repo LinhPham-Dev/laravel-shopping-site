@@ -62,11 +62,9 @@
                             </div>
                             @endif
                             <div class="ratings-container">
-                                <div class="ratings-full">
-                                    <span class="ratings" style="width:80%"></span>
-                                    <span class="tooltiptext tooltip-top"></span>
-                                </div>
-                                <a href="#product-tab-reviews" class="link-to-tab rating-reviews">( 11 reviews )</a>
+                                <div id="avg-rating"></div><span>{{ round($rating_avg, 1) }}</span>
+                                <a href="#product-tab-reviews" class="link-to-tab rating-reviews">( {{ $total_reviews }}
+                                    reviews )</a>
                             </div>
                             <p class="product-short-desc">{{ $product->description }}</p>
                             <div class="product-form product-variations product-color">
@@ -301,6 +299,7 @@
                     <div class="tab-pane " id="product-tab-reviews">
                         <div class="comments mb-8 pt-2 pb-2 border-no">
                             <ul>
+                                @foreach ($reviews as $review)
                                 <li>
                                     <div class="comment">
                                         <figure class="comment-media">
@@ -309,68 +308,28 @@
                                                     alt="avatar">
                                             </a>
                                         </figure>
-                                        <div class="comment-body">
-                                            <div class="comment-rating ratings-container mb-0">
-                                                <div class="ratings-full">
-                                                    <span class="ratings" style="width:80%"></span>
-                                                    <span class="tooltiptext tooltip-top">4.00</span>
-                                                </div>
-                                            </div>
-                                            <div class="comment-user">
-                                                <span class="comment-date text-body">September 22, 2020 at 9:42
-                                                    pm</span>
-                                                <h4><a href="#">John Doe</a></h4>
-                                            </div>
-
-                                            <div class="comment-content">
-                                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor
-                                                    libero sodales leo,
-                                                    eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo.
-                                                    Suspendisse potenti.
-                                                    Sed egestas, ante et vulputate volutpat, eros pede semper
-                                                    est, vitae luctus metus libero eu augue.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="comment">
-                                        <figure class="comment-media">
-                                            <a href="#">
-                                                <img src="{{asset('asset-frontend')}}/images/blog/comments/2.jpg"
-                                                    alt="avatar">
-                                            </a>
-                                        </figure>
 
                                         <div class="comment-body">
                                             <div class="comment-rating ratings-container mb-0">
                                                 <div class="ratings-full">
-                                                    <span class="ratings" style="width:80%"></span>
-                                                    <span class="tooltiptext tooltip-top">4.00</span>
+                                                    <span class="ratings"
+                                                        style="width:{{ $review->rating / 5 * 100 }}%"></span>
+                                                    <span class="tooltiptext tooltip-top">{{ $review->rating }}</span>
                                                 </div>
                                             </div>
                                             <div class="comment-user">
-                                                <span class="comment-date text-body">September 22, 2020 at 9:42
-                                                    pm</span>
-                                                <h4><a href="#">John Doe</a></h4>
+                                                <span
+                                                    class="comment-date text-body">{{ date_format($review->created_at, 'F d, Y \a\t g:i') }}</span>
+                                                <h4><a href="#">{{ $review->user->name }}</a></h4>
                                             </div>
 
                                             <div class="comment-content">
-                                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor
-                                                    libero sodales leo, eget blandit nunc tortor eu nibh. Nullam
-                                                    mollis.
-                                                    Ut justo. Suspendisse potenti. Sed egestas, ante et
-                                                    vulputate volutpat,
-                                                    eros pede semper est, vitae luctus metus libero eu augue.
-                                                    Morbi purus libero,
-                                                    faucibus adipiscing, commodo quis, avida id, est. Sed
-                                                    lectus. Praesent elementum
-                                                    hendrerit tortor. Sed semper lorem at felis. Vestibulum
-                                                    volutpat.</p>
+                                                <p>{{ $review->message }}.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
+                                @endforeach
                             </ul>
                         </div>
                         <!-- End Comments -->
@@ -379,46 +338,18 @@
                                 <h3 class="title title-simple text-left text-normal">Add a Review</h3>
                                 <p>Your email address will not be published. Required fields are marked *</p>
                             </div>
-                            <div class="rating-form">
-                                <label for="rating" class="text-dark">Your rating * </label>
-                                <span class="rating-stars selected">
-                                    <a class="star-1" href="#">1</a>
-                                    <a class="star-2" href="#">2</a>
-                                    <a class="star-3" href="#">3</a>
-                                    <a class="star-4 active" href="#">4</a>
-                                    <a class="star-5" href="#">5</a>
-                                </span>
-
-                                <select name="rating" id="rating" required="" style="display: none;">
-                                    <option value="">Rate…</option>
-                                    <option value="5">Perfect</option>
-                                    <option value="4">Good</option>
-                                    <option value="3">Average</option>
-                                    <option value="2">Not that bad</option>
-                                    <option value="1">Very poor</option>
-                                </select>
-                            </div>
-                            <form action="#">
+                            {{-- Reviews --}}
+                            <form action="{{ route('product_review') }}" method="POST">
+                                @csrf
+                                <input type="hidden" value="{{ $product->id }}" name="product_id">
+                                <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
+                                <input type="hidden" id="start-number" name="rating">
+                                <div class="rating-form">
+                                    <label for="rateYo" class="text-dark">Your rating * </label>
+                                    <div id="rateYo" data-rateyo-precision></div>
+                                </div>
                                 <textarea id="reply-message" cols="30" rows="6" class="form-control mb-4"
-                                    placeholder="Comment *" required></textarea>
-                                <div class="row">
-                                    <div class="col-md-6 mb-5">
-                                        <input type="text" class="form-control" id="reply-name" name="reply-name"
-                                            placeholder="Name *" required />
-                                    </div>
-                                    <div class="col-md-6 mb-5">
-                                        <input type="email" class="form-control" id="reply-email" name="reply-email"
-                                            placeholder="Email *" required />
-                                    </div>
-                                </div>
-                                <div class="form-checkbox mb-4">
-                                    <input type="checkbox" class="custom-checkbox" id="signin-remember"
-                                        name="signin-remember" />
-                                    <label class="form-control-label" for="signin-remember">
-                                        Save my name, email, and website in this browser for the next time I
-                                        comment.
-                                    </label>
-                                </div>
+                                    placeholder="Comment *" name="message" required></textarea>
                                 <button type="submit" class="btn btn-primary btn-rounded">Submit<i
                                         class="d-icon-arrow-right"></i></button>
                             </form>
@@ -507,7 +438,38 @@
 
 @endsection
 
+@section('css-option')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+@endsection
+
+@section('javascript-option')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
 <script>
+    // Rating
+    $(function () {
+        $("#rateYo").rateYo({
+        rating: 3.5,
+        halfStar: true,
+        multiColor: {
+            "startColor": "#c0392b", // Start
+            "endColor" : "#f1c40f" // End
+        },
+        onChange: function (rating, rateYoInstance) {
+            $('#start-number').val(rating);
+        }
+    });
+
+    // Avg Rating
+    $("#avg-rating").rateYo({
+        rating: {{ $rating_avg }},
+        readOnly: true,
+        starWidth: "20px"
+        });
+    });
+
+    // Add to cart
     function onAddCart() {
         $.ajax({
             type: "POST",
@@ -521,3 +483,4 @@
     }
 
 </script>
+@endsection

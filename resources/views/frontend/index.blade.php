@@ -223,8 +223,9 @@
                         <label class="product-label label-new">new</label>
                     </div>
                     <div class="product-action-vertical">
-                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal"
-                            title="Add to cart"><i class="d-icon-bag"></i></a>
+                        <a href="#"
+                            onclick="addItemToOrder({{ $product->id . ','. $product->productColors()->first()->id. ','. $product->productSizes()->first()->id  }} )"
+                            class="btn-product-icon" title="Add to cart"><i class="d-icon-bag"></i></a>
                         <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
                                 class="d-icon-heart"></i></a>
                     </div>
@@ -254,7 +255,7 @@
                             <span class="ratings" style="width:100%"></span>
                             <span class="tooltiptext tooltip-top"></span>
                         </div>
-                        <a href="product.html" class="rating-reviews">( 12 reviews )</a>
+                        <a href="" class="rating-reviews">( 12 reviews )</a>
                     </div>
                 </div>
             </div>
@@ -365,7 +366,7 @@
                             style="background-color: #f2f3f5;" />
                     </a>
                     <div class="product-action-vertical">
-                        <a href="#" class="btn-product-icon btn-cart" data-toggle="modal" data-target="#addCartModal"
+                        <a href="#" class="btn-product-icon" onclick="addItemToOrder({{ $product->id . ','. $product->productColors()->first()->id. ','. $product->productSizes()->first()->id  }} )"
                             title="Add to cart"><i class="d-icon-bag"></i></a>
                         <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
                                 class="d-icon-heart"></i></a>
@@ -582,7 +583,7 @@
                                     'name': 'fadeInLeftShorter',
                                     'delay': '.5s'
                                 }">
-                        <h4 class="widget-title border-no lh-1 font-weight-bold">Sale Products</h4>
+                        <h4 class="widget-title border-no lh-1 font-weight-bold">Popular</h4>
                         <div class="products-col">
                             @foreach ($sale_products as $product)
                             <div class="product product-list-sm">
@@ -625,7 +626,7 @@
                                                     'name': 'fadeInLeftShorter',
                                                     'delay': '.5s'
                                                 }">
-                        <h4 class="widget-title border-no lh-1 font-weight-bold">Sale Products</h4>
+                        <h4 class="widget-title border-no lh-1 font-weight-bold">Latest Products</h4>
                         <div class="products-col">
                             @foreach ($latest_products as $product)
                             <div class="product product-list-sm">
@@ -668,7 +669,7 @@
                                                     'name': 'fadeInLeftShorter',
                                                     'delay': '.5s'
                                                 }">
-                        <h4 class="widget-title border-no lh-1 font-weight-bold">Sale Products</h4>
+                        <h4 class="widget-title border-no lh-1 font-weight-bold">Best of the Week</h4>
                         <div class="products-col">
                             @foreach ($best_of_the_week as $product)
                             <div class="product product-list-sm">

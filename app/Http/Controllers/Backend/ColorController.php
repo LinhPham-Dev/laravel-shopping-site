@@ -18,7 +18,7 @@ class ColorController extends Controller
     public function index(Request $request)
     {
         $page   = 'Colors Management';
-        $colors = Color::paginate(3);
+        $colors = Color::latest()->paginate(3);
 
         return view('backend.colors.index', compact('page', 'colors'));
     }
@@ -69,7 +69,7 @@ class ColorController extends Controller
         $page = 'Edit Color';
         $colorUpdate = Color::find($id);
 
-        $colors = Color::paginate(3);
+        $colors = Color::latest()->paginate(3);
 
         return view('backend.colors.edit', compact('page', 'colorUpdate', 'colors'));
     }
@@ -96,9 +96,16 @@ class ColorController extends Controller
      */
     public function destroy($id)
     {
-        $result = Color::destroy($id);
+
+        $color = Color::find($id);
+
+        if ($color->productOfColors()->get()->count() > 0) {
+            $message = 'You cannot delete this color. Because it belongs to a certain product !';
+            return redirect()->back()->with('error', $message);
+        };
+
+        $result = $color->delete();
 
         return alertDelete($result, 'colors.index');
-
     }
 }

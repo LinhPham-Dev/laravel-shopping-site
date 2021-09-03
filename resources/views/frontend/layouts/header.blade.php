@@ -90,23 +90,26 @@
                                     class="d-icon-arrow-right"></i><span class="sr-only">Cart</span></a>
                         </div>
                         <div class="products scrollable">
-                            @foreach ($cart->content() as $item)
+                            @foreach ($cart->content() as $key => $item)
                             <div class="product product-cart">
                                 <figure class="product-media">
                                     <a href="{{ route('product_detail', $item['product']->slug ) }}">
                                         <img src="{{  asset('uploads/products/product_avatar') . '/'.  $item['product']->image }}"
                                             alt="product" width="80" height="88" />
                                     </a>
-                                    <button class="btn btn-link btn-close">
+                                    <a class="btn btn-link btn-close"
+                                        onclick="return confirm('Do you want to remove this item ?')"
+                                        href="{{ route('cart.remove', $key) }}">
                                         <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                    </button>
+                                    </a>
                                 </figure>
                                 <div class="product-detail">
                                     <a href="{{ route('product_detail', $item['product']->slug ) }}"
                                         class="product-name">{{ $item['name'] }}</a>
                                     <div class="price-box">
-                                        <span class="product-quantity">{{ $item['color'] }}</span>
-                                        <span class="product-quantity">{{ $item['size'] }}</span>
+                                        <span class="product-quantity">{{ $cart->getColorName($item['color']) }}
+                                        </span>
+                                        <span class="product-quantity">{{ $cart->getSizeName($item['size']) }}</span>
                                         <span class="product-quantity">{{ $item['quantity'] }}</span>
                                         <span class="product-price">${{ number_format($item['price'], 2, ',') }}</span>
                                     </div>
@@ -139,20 +142,20 @@
             <div style="margin: 0 auto" class="header-menu">
                 <nav class="main-nav">
                     <ul class="menu">
-                        <li class="active">
+                        <li class="{{ request()->is('/') || request()->is('') ? 'active' : '' }}">
                             <a href="{{ route('home') }}">Home</a>
                         </li>
-                        <li>
-                            <a href="{{ route('category') }}">Products</a>
+                        <li class="{{ request()->is('category') || request()->is('category/*') ? 'active' : '' }}">
+                            <a href="{{ route('category') }}">Shop</a>
                         </li>
-                        <li>
+                        <li class="{{ request()->is('cart') || request()->is('cart/*') ? 'active' : '' }}">
                             <a href="{{ route('cart.show') }}">Cart</a>
                         </li>
                         <li>
                             <a href="{{ route('category') }}">Wishlist</a>
                         </li>
-                        <li>
-                            <a href="">Contact Us</a>
+                        <li class="{{ request()->is('checkout') || request()->is('checkout/*') ? 'active' : '' }}">
+                            <a href="{{ route('order.history') }}">Order history</a>
                         </li>
                         <li>
                             <a href="">Blogs</a>

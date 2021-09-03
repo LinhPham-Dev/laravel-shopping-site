@@ -6,6 +6,31 @@
 
 <section class="content">
     <div class="row">
+        <div class="col-md-12">
+            {{-- Search --}}
+            <div class="card px-3 pt-3">
+                <form method="GET">
+                    <div class="row my-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="name" id="name"
+                                    placeholder="Enter category name ..." value="{{ request()->name }}">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <select name="status" class="form-control">
+                                <option>Choose status</option>
+                                <option {{ request()->status == 1 ? 'selected' : '' }} value="1">Show</option>
+                                <option {{ request()->status == 0 ? 'selected' : '' }} value="0">Hide</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-info">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="col-lg-4">
             <div class="card card-primary">
                 <div class="card-header">
@@ -72,7 +97,8 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table class="table table-bordered table-hover table-responsive table-info text-center">
+                                            <table
+                                                class="table table-bordered table-hover table-responsive table-info text-center">
                                                 <thead>
                                                     <tr>
                                                         <th width="10%">STT</th>
@@ -98,7 +124,9 @@
                                                             <p>{{ Str::limit($category->name, 15, '...') }}</p>
                                                         </td>
                                                         <td>{{ Str::limit($category->slug, 15, '...') }}</td>
-                                                        <td><img class="w-100" src="{{ asset('uploads/categories') . '/' . $category->image  }}" alt="{{ $category->name }}"></td>
+                                                        <td><img class="w-100"
+                                                                src="{{ asset('uploads/categories') . '/' . $category->image  }}"
+                                                                alt="{{ $category->name }}"></td>
                                                         <td>
                                                             @if($category->status == 1)
                                                             <span class="badge badge-success">Show</span>
@@ -114,8 +142,10 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button class="btn btn-danger" type="submit"><i
-                                                                        class="fas fa-trash"></i></button>
+                                                                <button
+                                                                    onclick="return confirm('Are you sure to take this action ?')"
+                                                                    class="btn btn-danger" type="submit">
+                                                                    <i class="fas fa-trash"></i></button>
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -130,13 +160,14 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-5">
                                             <div class="dataTables_info my-2">
-                                                <p>Showing {{ $categories->firstItem() }} to {{ $categories->lastItem() }} of
+                                                <p>Showing {{ $categories->firstItem() }} to
+                                                    {{ $categories->lastItem() }} of
                                                     {{$categories->total()}} entries</p>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-7">
                                             <div class="float-right">
-                                                {{ $categories->links() }}
+                                                {{ $categories->withQueryString()->links() }}
                                             </div>
                                         </div>
                                     </div>

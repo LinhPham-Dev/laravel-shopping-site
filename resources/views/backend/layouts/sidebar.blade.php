@@ -2,10 +2,9 @@
 $list_menu = config('menu')
 @endphp
 
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
+    <a href="{{ route('dashboard') }}" class="brand-link">
         <img src="{{ asset('asset-backend') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">AdminLTE 3</span>
@@ -22,7 +21,7 @@ $list_menu = config('menu')
             <div class="info">
                 <a href="#" class="d-block">
                     @auth('admin')
-                        Admin
+                    {{ Auth::guard('admin')->user()->name }}
                     @endauth
                 </a>
             </div>
@@ -43,44 +42,116 @@ $list_menu = config('menu')
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                <!-- List Menu -->
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('admin') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="nav-link ">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
-                @foreach ($list_menu as $menu)
-                <!-- List Menu -->
                 <li class="nav-item">
                     <a href="#"
-                        class="nav-link {{ request()->is('admin/'.$menu['name']) || request()->is('admin/'.$menu['name'].'/*') ? 'active' : '' }}">
-                        <i class="nav-icon {{ $menu['icon'] }}"></i>
+                        class="nav-link {{ request()->is('admin/products' ) || request()->is('admin/products/*') ? 'active' : '' }}">
+                        <i class="nav-icon fab fa-dropbox"></i>
                         <p>
-                            {{ $menu['label'] }}
-                            @isset($menu['child_item'])
+                            Product
                             <i class="fas fa-angle-left right"></i>
-                            @endisset
-                            <span class="badge badge-info right">{{ Rand(4,13) }}</span>
+                            <span class="badge badge-info right">{{ $total_item->totalProduct() }}</span>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @isset($menu['child_item'])
-                        @foreach($menu['child_item'] as $menu_child)
                         <li class="nav-item">
-                            <a href="{{ route($menu_child['route']) }}" class="nav-link">
+                            <a href="http://127.0.0.1:8000/admin/products" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>{{ $menu_child['label'] }}</p>
+                                <p>List Product</p>
                             </a>
                         </li>
-                        @endforeach
-                        @endisset
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:8000/admin/products/create" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add Product</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-                @endforeach
+                <li class="nav-item">
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/categories' ) || request()->is('admin/categories/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Category
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">{{ $total_item->totalCategory() }}</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:8000/admin/categories" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Category Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/orders' ) || request()->is('admin/orders/*') ? 'active' : '' }}">
+                        <i class=" nav-icon fas fa-file-invoice-dollar"></i>
+                        <p>
+                            Order
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">{{ $total_item->totalOrder() }}</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:8000/admin/orders/show" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Order Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/colors' ) || request()->is('admin/colors/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-palette"></i>
+                        <p>
+                            Color
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">{{ $total_item->totalColor() }}</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:8000/admin/colors" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Color Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#"
+                        class="nav-link {{ request()->is('admin/sizes' ) || request()->is('admin/sizes/*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-crop-alt"></i>
+                        <p>
+                            Size
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">{{ $total_item->totalSize() }}</span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="http://127.0.0.1:8000/admin/sizes" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Size Management</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

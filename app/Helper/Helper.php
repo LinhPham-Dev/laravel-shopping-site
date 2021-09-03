@@ -131,3 +131,19 @@ if (!function_exists('orderStatusClassAdmin')) {
         }
     }
 }
+
+// Money date
+if (!function_exists('moneyFormat')) {
+    function moneyFormat($money)
+    {
+        return number_format($money, 2, ',');
+    }
+}
+
+// Count total item
+if (!function_exists('countTotalItem')) {
+    function countTotalItem($model)
+    {
+        $model::all()->count();
+    }
+}

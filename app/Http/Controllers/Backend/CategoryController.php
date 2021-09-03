@@ -28,7 +28,7 @@ class CategoryController extends Controller
     public function index()
     {
         $page = 'Categories Management';
-        $categories = Category::latest()->paginate(3);
+        $categories = Category::latest()->search()->paginate(3);
         return view('backend.categories.index', compact('page', 'categories'));
     }
 
@@ -92,7 +92,7 @@ class CategoryController extends Controller
         $page = 'Edit Category';
         $categoryUpdate = Category::find($id);
 
-        $categories = Category::paginate(3);
+        $categories = Category::latest()->search()->paginate(3);
 
         return view('backend.categories.edit', compact('page', 'categoryUpdate', 'categories'));
     }
@@ -143,6 +143,11 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::where('id', $id)->first();
+
+        if ($category->productOfCategories()->get()->count() > 0) {
+            $message = 'You cannot delete this category. Because it belongs to a certain product !';
+            return redirect()->back()->with('error', $message);
+        };
 
         // Remove old file
         $path = 'uploads/categories/';

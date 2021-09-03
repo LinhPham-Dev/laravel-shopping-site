@@ -84,40 +84,16 @@
                                     value="{{ Auth::user()->email }}" />
                             </div>
                         </div>
-                        <div class="select-box">
-                            <label>Country / Region *</label>
-                            <select name="country" class="form-control">
-                                <option value="us" selected="">United States (US)</option>
-                                <option value="uk"> United Kingdom</option>
-                                <option value="fr">France</option>
-                                <option value="aus">Austria</option>
-                            </select>
-                        </div>
                         <div class="row">
-                            <div class="col-xs-6">
-                                <label>Town / City *</label>
-                                <input type="text" class="form-control" name="city" />
-                            </div>
-                            <div class="col-xs-6">
-                                <label>District *</label>
-                                <input type="text" class="form-control" name="district" />
+                            <div class="col-xs-12">
+                                <label>Phone *</label>
+                                <input type="text" class="form-control" name="phone" required placeholder="Phone" />
                             </div>
                         </div>
                         <label>Street Address *</label>
                         <input type="text" class="form-control" name="address1"
                             placeholder="House number and street name" required />
-                        <input type="text" class="form-control" name="address2"
-                            placeholder="Apartment, suite, unit, etc. (optional)" />
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label>ZIP *</label>
-                                <input type="text" class="form-control" name="zip" />
-                            </div>
-                            <div class="col-xs-6">
-                                <label>Phone *</label>
-                                <input type="text" class="form-control" name="phone" required />
-                            </div>
-                        </div>
+
                         <h2 class="title title-simple text-uppercase text-left">Additional Information</h2>
                         <label>Order Notes (Optional)</label>
                         <textarea class="form-control pb-2 pt-2 mb-0 text-dark" cols="30" rows="5" name="note"
@@ -162,7 +138,8 @@
                                                         <div class="custom-radio">
                                                             <input type="radio" id="{{ $ship->value }}"
                                                                 name="shipping_unit" class="custom-control-input"
-                                                                value="{{ $ship->id }}" {{ $ship->id == 1 ? 'checked' : '' }}>
+                                                                value="{{ $ship->id }}"
+                                                                {{ $ship->id == 1 ? 'checked' : '' }}>
                                                             <label class="custom-control-label"
                                                                 for="{{ $ship->value }}">{{ $ship->name }}</label>
                                                         </div>
@@ -190,7 +167,8 @@
                                                         <div class="custom-radio">
                                                             <input type="radio" id="{{ $pay->value }}"
                                                                 name="payment_methods" class="custom-control-input"
-                                                                value="{{ $pay->id }}" {{ $pay->id == 1 ? 'checked' : '' }}>
+                                                                value="{{ $pay->id }}"
+                                                                {{ $pay->id == 1 ? 'checked' : '' }}>
                                                             <label class="custom-control-label"
                                                                 for="{{ $pay->value }}">{{ $pay->name }}</label>
                                                         </div>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>eCommerce Riode</title>
 
     <meta name="keywords" content="eCommerce Riode" />
@@ -51,6 +52,7 @@
     <!-- Plugins JS File -->
     @includeIf('frontend.layouts.javascript')
     @yield('javascript-option')
+
 </body>
 
 </html>

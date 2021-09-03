@@ -1,10 +1,25 @@
 <?php
 
+use App\Models\Backend\Category;
+use App\Models\Backend\Color;
+use App\Models\Backend\Product;
+use App\Models\Backend\Size;
+use App\Models\Order;
+use App\Models\User;
+
+// $total_categories = Category::all()->count();
+// $total_products = Product::all()->count();
+// $total_accounts = User::all()->count();
+// $total_orders = Order::all()->count();
+// $total_colors = Color::all()->count();
+// $total_sizes = Size::all()->count();
+
 return [
     [
         'label' => 'Product',
         'name' => 'products',
         'icon' =>  'fab fa-dropbox',
+        // 'total' =>  $total_product,
         'child_item' => [
             [
                 'label' => 'List Product',
@@ -20,6 +35,7 @@ return [
         'label' => 'Category',
         'name' => 'categories',
         'icon' =>  'fas fa-chart-pie',
+        // 'total' =>  $total_categories,
         'child_item' => [
             [
                 'label' => 'Category Management',
@@ -29,8 +45,9 @@ return [
     ],
     [
         'label' => 'Order',
-        'name' => 'order',
+        'name' => 'orders',
         'icon' =>  'fas fa-file-invoice-dollar',
+        // 'total' =>  $total_orders,
         'child_item' => [
             [
                 'label' => 'Order Management',
@@ -42,6 +59,7 @@ return [
         'label' => 'Color',
         'name' => 'colors',
         'icon' =>  'fas fa-palette',
+        // 'total' =>  $total_colors,
         'child_item' => [
             [
                 'label' => 'Color Management',
@@ -53,6 +71,7 @@ return [
         'label' => 'Size',
         'name' => 'sizes',
         'icon' =>  'fas fa-crop-alt',
+        // 'total' =>  $total_sizes,
         'child_item' => [
             [
                 'label' => 'Size Management',
@@ -64,6 +83,7 @@ return [
         'label' => 'Post',
         'name' => 'posts',
         'icon' =>  'fas fa-pencil-alt',
+        // 'total' =>  13,
         'child_item' => [
             [
                 'label' => 'List Posts',
@@ -75,6 +95,7 @@ return [
         'label' => 'Account',
         'name' => 'accounts',
         'icon' =>  'fas fa-user-circle',
+        // 'total' =>  $total_accounts,
         'child_item' => [
             [
                 'label' => 'List Account',
@@ -86,6 +107,7 @@ return [
         'label' => 'Banner',
         'name' => 'banners',
         'icon' =>  'fas fa-images',
+        // 'total' =>  6,
         'child_item' => [
             [
                 'label' => 'List Banner',

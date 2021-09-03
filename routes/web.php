@@ -32,7 +32,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-
 // *** FontEnd Route *** \\
 Route::get('/home', function () {
     return redirect()->route('home');
@@ -43,6 +42,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/category/{slug?}', [HomeController::class, 'category'])->name('category');
 
 Route::get('/product/{slug}', [HomeController::class, 'product'])->name('product_detail');
+
+Route::post('/product/review', [HomeController::class, 'review'])->name('product_review')->middleware('auth');
+
 
 Route::prefix('cart')->group(function () {
     // Show all item
@@ -137,7 +139,6 @@ Route::prefix('admin')->group(function () {
             Route::get('/detail/{id}', [BackendOrderController::class, 'detail'])->name('backend.order.detail');
 
             Route::put('/update/{id}', [BackendOrderController::class, 'update'])->name('backend.order.update');
-
         });
     });
 });

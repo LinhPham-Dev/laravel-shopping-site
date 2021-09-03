@@ -17,4 +17,10 @@ class Size extends Model
     {
         return self::where('status', 1)->get();
     }
+
+    // Check the product number belongs to the size
+    public function productOfSizes()
+    {
+        return $this->belongsToMany(Product::class, ProductSize::class);
+    }
 }

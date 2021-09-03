@@ -5,20 +5,23 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function show()
     {
+
         $page = 'List Orders';
 
-        $orders = Order::paginate(5);
+        $orders = Order::latest()->paginate(5);
 
         return view('backend.orders.index', compact('orders', 'page'));
     }
 
     public function detail($id)
     {
+
         $page = 'Order Detail';
 
         $order = Order::find($id);

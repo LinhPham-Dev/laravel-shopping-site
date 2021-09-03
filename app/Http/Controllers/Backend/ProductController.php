@@ -54,8 +54,11 @@ class ProductController extends Controller
     public function index()
     {
         $page = 'List Products';
-        $products = Product::latest()->search()->paginate(3);
-        return view('backend.products.index', compact('products', 'page'));
+        $colors = Color::all();
+        $sizes = Size::all();
+        $products = Product::latest()->searchByColor()->searchBySize()->search()->paginate(3);
+
+        return view('backend.products.index', compact('products', 'page', 'colors', 'sizes'));
     }
 
     /**
@@ -248,6 +251,11 @@ class ProductController extends Controller
     {
 
         $productDelete = Product::find($id);
+
+        if ($productDelete->orderOfProduct()->get()->count() > 0) {
+            $message = 'You cannot delete this product. Because it belongs to a certain order !';
+            return redirect()->back()->with('error', $message);
+        };
 
         $imageDetails = $productDelete->productImages;
 

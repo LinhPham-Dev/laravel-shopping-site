@@ -61,10 +61,6 @@
                                             <td>{{ $order->user->email }}</td>
                                             <td>{{ date_format($order->created_at, 'G:i F Y') }}</td>
                                             <td>${{ number_format($order->total_amount, 2, ',') }}</td>
-                                            {{-- <td><span class="badge {{ orderStatusClass($order->status) }}">
-                                            {{ orderStatus($order->status) }}
-                                            </span>
-                                            </td> --}}
                                             <td>
                                                 <select onchange="onChangeStatus({{ $order->id }})"
                                                     data-order="{{ $order->id }}" id="order-{{ $order->id }}"

@@ -21,8 +21,6 @@ class OrderConfirmation extends Mailable
     public function __construct($order)
     {
         $this->order = $order;
-
-        // dd($this->order);
     }
 
     /**
@@ -32,6 +30,6 @@ class OrderConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->from('linhp0418@gmail.com', 'Phạm Ngọc Linh')->view('frontend.mail.order')->with(['order' => $this->order]);
+        return $this->from('linhp0418@gmail.com', 'Riode Shop')->view('frontend.mail.order')->with(['order' => $this->order]);
     }
 }

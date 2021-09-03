@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Helper\CartHelper;
+use App\Services\CountTotalService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,9 +33,11 @@ class AppServiceProvider extends ServiceProvider
         // View compose
         View::composer('*', function ($view) {
             $cart = new CartHelper();
+            $total_item = new CountTotalService();
 
             $view->with([
                 'cart' => $cart,
+                'total_item' => $total_item,
             ]);
         });
     }

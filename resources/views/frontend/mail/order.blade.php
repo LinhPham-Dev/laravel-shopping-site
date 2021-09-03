@@ -19,36 +19,47 @@
         <div class="order-message mr-auto ml-auto">
             <div class="icon-box d-inline-flex align-items-center">
                 <div class="icon-box-content text-left">
-                    <h5 class="icon-box-title font-weight-bold lh-1 mb-1">Thank You!</h5>
-                    <p class="lh-1 ls-m">Your order has been received</p>
+                    <h1>Thank You!</h1>
+                    <h4>Your order has been received</h4>
+                    <h5><a href="{{ route('order.confirm', $order->token ) }}">Please confirm your order to complete
+                            !</a>
+                    </h5>
                 </div>
             </div>
         </div>
         <div class="order-results text-center">
-            <div class="overview-item">
-                <span>Number:</span>
-                <strong>{{ $order->id }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Status:</span>
-                <strong>{{ orderStatus($order->status) }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Date:</span>
-                <strong>{{ date_format($order->created_at, 'g:i F Y') }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Email:</span>
-                <strong>{{ $order->user->email }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Total:</span>
-                <strong>${{ $order->total_amount }}</strong>
-            </div>
-            <div class="overview-item">
-                <span>Payment method:</span>
-                <strong>Cash on delivery</strong>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>
+                            <h3 class="summary-subtitle">Order infomation</h3>
+                        </td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Order Number:</td>
+                        <td>#{{ $order->id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date:</td>
+                        <td>{{ date_format($order->created_at, 'g:i F Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>{{ $order->user->email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total:</td>
+                        <td>${{ number_format($order->total_amount, 2, ',') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Payment method:</td>
+                        <td>Cash on delivery</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <h2 class="title title-simple text-left pt-4 font-weight-bold text-uppercase">Order Details</h2>
@@ -65,17 +76,14 @@
                 <tbody>
                     @foreach ($order->orderDetails as $item)
                     <tr>
-                        <td class="product-name">{{ $item->product->name }}
-                            <span>
-                                -
-                                {{ $item->color->name }}
-                                -
-                                {{ $item->size->name }}
-                                x
-                                {{ $item->quantity }}
-                            </span>
+                        <td class="product-name">
+                            <span>{{ $item->iteration }}.</span>
+                            <span>{{ $item->product->name }} - </span>
+                            <span style="color: {{ $item->color->vaue }}">{{ $item->color->name }} - </span>
+                            <span>{{ $item->size->name }} x</span>
+                            <span>{{ $item->quantity }}</span>
                         </td>
-                        <td class="product-price">${{ number_format($item->price, 2, ',') }}</td>
+                        <td class="product-price"><b>${{ number_format($item->price, 2, ',') }}</b></td>
                     </tr>
                     @endforeach
                     <tr class="summary-subtotal">
@@ -118,8 +126,6 @@
                 <span>Email: {{ $order->user->email }}</span><br>
             </p>
         </div>
-
-        <a href="{{ route('order.confirm', $order->token ) }}">Confirm my order !</a>
     </div>
 
     <!-- Optional JavaScript -->

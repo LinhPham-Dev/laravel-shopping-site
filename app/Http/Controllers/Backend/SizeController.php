@@ -18,7 +18,7 @@ class SizeController extends Controller
     public function index()
     {
         $page = 'Size Management';
-        $sizes = Size::paginate(3);
+        $sizes = Size::latest()->paginate(3);
         return view('backend.sizes.index', compact('page', 'sizes'));
     }
 
@@ -68,7 +68,7 @@ class SizeController extends Controller
         $page = 'Edit Size';
         $sizeUpdate = Size::find($id);
 
-        $sizes = Size::paginate(3);
+        $sizes = Size::latest()->paginate(3);
 
         return view('backend.sizes.edit', compact('page', 'sizeUpdate', 'sizes'));
     }
@@ -96,7 +96,14 @@ class SizeController extends Controller
      */
     public function destroy($id)
     {
-        $result = Size::destroy($id);
+        $size = Size::find($id);
+
+        if ($size->productOfSizes()->get()->count() > 0) {
+            $message = 'You cannot delete this size. Because it belongs to a certain product !';
+            return redirect()->back()->with('error', $message);
+        };
+
+        $result = $size->delete();
 
         return alertDelete($result, 'sizes.index');
     }

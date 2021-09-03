@@ -121,7 +121,9 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('delete')
-                                                                <button class="btn btn-danger" type="submit"><i
+                                                                <button
+                                                                    onclick="return confirm('Are you sure to take this action?')"
+                                                                    class="btn btn-danger" type="submit"><i
                                                                         class="fas fa-trash"></i></button>
                                                             </form>
                                                         </td>

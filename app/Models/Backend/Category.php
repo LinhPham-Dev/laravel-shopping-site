@@ -17,6 +17,25 @@ class Category extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
+    // Check the product number belongs to the category
+    public function productOfCategories()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function scopeSearch($query)
+    {
+        if (request()->name) {
+            $query->where('name', 'LIKE', '%' . request()->name . '%');
+        }
+
+        if (request()->status != null) {
+            $query->where('status', request()->status);
+        }
+
+        return $query;
+    }
+
     public function categoryActives()
     {
         return self::where('status', 1)->get();

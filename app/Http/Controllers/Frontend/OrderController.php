@@ -41,7 +41,7 @@ class OrderController extends Controller
             $new_order = Order::findOrFail($order->id);
 
             // Send mail.
-            Mail::to($request->user())->send(new OrderConfirmation($new_order));
+            Mail::to($request->email)->send(new OrderConfirmation($new_order));
 
             return redirect()->route('order.check');
         }

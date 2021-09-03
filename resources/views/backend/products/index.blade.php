@@ -6,6 +6,47 @@
 
 <section class="content">
     <div class="container-fluid">
+        {{-- Search --}}
+        <div class="card px-3 pt-3">
+            <form method="GET">
+                <div class="row my-3">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" id="name"
+                                placeholder="Enter product name ..." value="{{ request()->name }}">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select name="status" class="form-control">
+                            <option>Choose status</option>
+                            <option {{ request()->status == 1 ? 'selected' : '' }} value="1">Show</option>
+                            <option {{ request()->status == 0 ? 'selected' : '' }} value="0">Hide</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select name="color" class="form-control">
+                            <option value="">Choose color</option>
+                            @foreach ($colors as $color)
+                            <option {{ request()->color == $color->id ? 'selected' : '' }} value="{{ $color->id }}">
+                                {{ $color->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select class="form-control" name="size">
+                            <option value="">Choose size</option>
+                            @foreach ($sizes as $size)
+                            <option {{ request()->size == $size->id ? 'selected' : '' }} value="{{ $size->id }}">
+                                {{ $size->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-info">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -33,7 +74,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @if(count($products) == 0)
                                         <div class=" alert alert-warning alert-dismissible fade show" role="alert">
                                             <span>No any products here !</span>
@@ -93,7 +133,9 @@
                                                     method="POST">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="btn btn-danger m-1" type="submit"><i
+                                                    <button
+                                                        onclick="return confirm('Are you sure to take this action?')"
+                                                        class="btn btn-danger m-1" type="submit"><i
                                                             class="fas fa-trash"></i></button>
                                                 </form>
                                             </td>
@@ -115,7 +157,7 @@
                             </div>
                             <div class="col-sm-12 col-md-7">
                                 <div class="float-right">
-                                    {{ $products->links() }}
+                                    {{ $products->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>
