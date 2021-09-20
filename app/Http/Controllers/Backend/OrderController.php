@@ -46,7 +46,7 @@ class OrderController extends Controller
             // Send status class
             $status = orderStatusClassAdmin($status);
 
-            // Response date
+            // Response data
             return response()->json(['status' => $status, 'order_id' => $id, 'message' => "Update status order number $id success !"]);
         }
     }

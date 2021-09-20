@@ -85,7 +85,6 @@ Route::fallback(function () {
     return view('frontend.pages.error');
 });
 
-
 // Facebook login
 Route::get('info-facebook/{facebook}', [FacebookController::class,  'getInfo'])->name('facebook_login');
 

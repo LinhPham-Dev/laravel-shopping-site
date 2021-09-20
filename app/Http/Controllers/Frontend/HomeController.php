@@ -43,6 +43,7 @@ class HomeController extends Controller
         return view('frontend.pages.product', compact('products', 'categories', 'sizes', 'colors'));
     }
 
+
     public function product($slug)
     {
 

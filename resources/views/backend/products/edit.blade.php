@@ -141,7 +141,7 @@
                                     @enderror
                                     <div class="image-detail d-md-flex my-4">
                                         @foreach ($productEdit->productImages as $imageDetail)
-                                        <div class="image-item my-3">
+                                        <div class="image-item">
                                             <img class="w-75"
                                                 src="{{ asset('uploads/products/product_details/'. $imageDetail->image_name) }}"
                                                 alt="{{ $imageDetail->image_name }}">

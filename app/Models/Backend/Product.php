@@ -93,8 +93,6 @@ class Product extends Model
         }
     }
 
-
-
     // Get the category of product
     public function category()
     {
